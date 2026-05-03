@@ -1,6 +1,20 @@
+// Di dalam Managers/ScoringRule.h
 #pragma once
 #include "../Models/Hand.h"
-#include "../HandChecker/ConcreteChecker.h"
+
+#include "../HandChecker/FlushFiveChecker.h"
+#include "../HandChecker/FlushHouseChecker.h"
+#include "../HandChecker/FiveOfAKindChecker.h"
+#include "../HandChecker/RoyalFlushChecker.h"
+#include "../HandChecker/StraightFlushChecker.h"
+#include "../HandChecker/FourOfAKindChecker.h"
+#include "../HandChecker/FullHouseChecker.h"
+#include "../HandChecker/FlushChecker.h"
+#include "../HandChecker/StraightChecker.h"
+#include "../HandChecker/ThreeOfAKindChecker.h"
+#include "../HandChecker/TwoPairChecker.h"
+#include "../HandChecker/PairChecker.h"
+#include "../HandChecker/HighCardChecker.h"
 
 class ScoringRule {
 private:
