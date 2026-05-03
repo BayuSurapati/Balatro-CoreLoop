@@ -23,18 +23,21 @@ int ScoringRule::scoreHand(const Hand& hand) {
 }
 
 int ScoringRule::convertRankToScore(HandRank rank) {
-    if (rank == HandRank::HIGH_CARD) return 100;
-    else if (rank == HandRank::PAIR) return 200;
-    else if (rank == HandRank::TWO_PAIR) return 300;
-    else if (rank == HandRank::THREE_OF_A_KIND) return 400;
-    else if (rank == HandRank::STRAIGHT) return 500;
-    else if (rank == HandRank::FLUSH) return 600;
-    else if (rank == HandRank::FULL_HOUSE) return 700;
-    else if (rank == HandRank::FOUR_OF_A_KIND) return 800;
-    else if (rank == HandRank::STRAIGHT_FLUSH) return 900;
-    else if (rank == HandRank::ROYAL_FLUSH) return 1000;    
-    else if (rank == HandRank::FIVE_OF_A_KIND) return 1100;
-    else if (rank == HandRank::FLUSH_FIVE) return 1200;
-    else if (rank == HandRank::FLUSH_HOUSE) return 1300; 
-    return 0;
+    // Menggunakan switch case membuat pemetaan enum ke integer sangat rapi
+    switch (rank) {
+        case HandRank::FLUSH_FIVE:      return 1200;
+        case HandRank::FLUSH_HOUSE:     return 1300;
+        case HandRank::FIVE_OF_A_KIND:  return 1100;
+        case HandRank::ROYAL_FLUSH:     return 1000;
+        case HandRank::STRAIGHT_FLUSH:  return 900;
+        case HandRank::FOUR_OF_A_KIND:  return 800;
+        case HandRank::FULL_HOUSE:      return 700;
+        case HandRank::FLUSH:           return 600;
+        case HandRank::STRAIGHT:        return 500;
+        case HandRank::THREE_OF_A_KIND: return 400;
+        case HandRank::TWO_PAIR:        return 300;
+        case HandRank::PAIR:            return 200;
+        case HandRank::HIGH_CARD:       return 100;
+        default:                        return 0; // Fallback jika tidak ada yang cocok
+    }
 }
