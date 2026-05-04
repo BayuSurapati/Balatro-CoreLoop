@@ -1,9 +1,8 @@
-// Models/Hand.h
+// Models/ChosenHand.h
 #pragma once
 #include <vector>
 #include "Card.h"
-#include "HandRank.h"
 
-struct Hand {
+struct ChosenHand {
     std::vector<Card> cards;
 };
