@@ -16,14 +16,13 @@ ScoringRule::ScoringRule() {
     pair.setNext(&highCard);
 }
 
-int ScoringRule::scoreHand(const Hand& hand) {
+int ScoringRule::scoreHand(const ChosenHand& chosen) {
     std::cout << "[System] Memulai evaluasi kartu pemain:\n";
-    HandRank rank = flushFive.check(hand); 
+    HandRank rank = flushFive.check(chosen);
     return convertRankToScore(rank);
 }
 
 int ScoringRule::convertRankToScore(HandRank rank) {
-    // Menggunakan switch case membuat pemetaan enum ke integer sangat rapi
     switch (rank) {
         case HandRank::FLUSH_FIVE:      return 1200;
         case HandRank::FLUSH_HOUSE:     return 1300;
@@ -38,6 +37,6 @@ int ScoringRule::convertRankToScore(HandRank rank) {
         case HandRank::TWO_PAIR:        return 300;
         case HandRank::PAIR:            return 200;
         case HandRank::HIGH_CARD:       return 100;
-        default:                        return 0; // Fallback jika tidak ada yang cocok
+        default:                        return 0;
     }
 }

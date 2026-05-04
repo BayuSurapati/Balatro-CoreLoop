@@ -1,7 +1,6 @@
-// Di dalam Managers/ScoringRule.h
 #pragma once
-#include "../Models/Hand.h"
-
+#include "../Models/ChosenHand.h"
+#include "../Models/HandRank.h"
 #include "../HandChecker/FlushFiveChecker.h"
 #include "../HandChecker/FlushHouseChecker.h"
 #include "../HandChecker/FiveOfAKindChecker.h"
@@ -34,6 +33,6 @@ private:
 
 public:
     ScoringRule();
-    int scoreHand(const Hand& hand);
+    int scoreHand(const ChosenHand& chosen);
     int convertRankToScore(HandRank rank);
 };
