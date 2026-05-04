@@ -1,17 +1,46 @@
 #pragma once
-#include "../Models/Hand.h"
+#include "../Models/ChosenHand.h"
+#include "../Models/HandRank.h"
+#include <map>
+#include <algorithm>
+#include <vector>
 
-class PokerHandChecker
-{
+class PokerHandChecker {
 protected:
     PokerHandChecker* nextChecker = nullptr;
-public:
-    virtual ~PokerHandChecker() = default;
 
-    void setNext(PokerHandChecker* next){
-        nextChecker = next;
+    // Helper functions - bisa dipakai semua checker turunan
+    std::map<int,int> rankCount(const ChosenHand& hand) const {
+        std::map<int,int> freq;
+        for (auto& c : hand.cards) freq[c.rank]++;
+        return freq;
     }
 
-    virtual HandRank check(const Hand& hand) = 0;
-};
+    bool allSameSuit(const ChosenHand& hand) const {
+        char s = hand.cards[0].suit;
+        for (auto& c : hand.cards)
+            if (c.suit != s) return false;
+        return true;
+    }
 
+    bool isSequential(const ChosenHand& hand) const {
+        std::vector<int> ranks;
+        for (auto& c : hand.cards) ranks.push_back(c.rank);
+        std::sort(ranks.begin(), ranks.end());
+        for (int i = 1; i < (int)ranks.size(); i++)
+            if (ranks[i] != ranks[i-1] + 1) return false;
+        return true;
+    }
+
+    int countFreq(const std::map<int,int>& freq, int n) const {
+        int count = 0;
+        for (auto& p : freq)
+            if (p.second == n) count++;
+        return count;
+    }
+
+public:
+    virtual ~PokerHandChecker() = default;
+    void setNext(PokerHandChecker* next) { nextChecker = next; }
+    virtual HandRank check(const ChosenHand& hand) = 0;
+};

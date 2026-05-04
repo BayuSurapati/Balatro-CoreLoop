@@ -1,9 +1,12 @@
 #include "FiveOfAKindChecker.h"
 #include <iostream>
-HandRank FiveOfAKindChecker::check(const Hand& hand) {
+HandRank FiveOfAKindChecker::check(const ChosenHand& hand) {
     std::cout << "  [Log] Mengecek: Five of a Kind...\n";
-    if (hand.dummyValue == 11) {
-        std::cout << "  [!] Kombinasi FIVE OF A KIND ditemukan!\n"; return HandRank::FIVE_OF_A_KIND;
+    auto freq = rankCount(hand);
+    if (countFreq(freq, 5) == 1) {
+        std::cout << "  [!] Kombinasi FIVE OF A KIND ditemukan!\n";
+        return HandRank::FIVE_OF_A_KIND;
     }
-    if (nextChecker) return nextChecker->check(hand); return HandRank::NONE;
+    if (nextChecker) return nextChecker->check(hand);
+    return HandRank::NONE;
 }
