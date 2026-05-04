@@ -1,2 +1,9 @@
+// Core/HandPlayer.h
 #pragma once
-class HandPlayer { public: void playHand(); };
+#include "../Models/Hand.h"
+#include "../Models/ChosenHand.h"
+
+class HandPlayer {
+public:
+    ChosenHand playHand(const Hand& hand);
+};
