@@ -10,9 +10,7 @@ void GameManager::runSession() {
         std::cout << "\n--- RONDE BARU ---\n";
         std::cout << "[System] Uang saat ini: $" << playerMoney << "\n";
         std::cout << "[System] Joker yang dimiliki: ";
-        if (ownedJokers.empty()) std::cout << "Tidak ada";
-        for (auto& j : ownedJokers) std::cout << "[" << j->getName() << "] ";
-        std::cout << "\n";
+        jokerManager.displayJokers();
 
         Hand hand = handGenerator.generateHand();
         ChosenHand chosen = handPlayer.playHand(hand);
@@ -21,20 +19,15 @@ void GameManager::runSession() {
         HandRank rank = scoringRule.evaluateHand(chosen);
         Score score = scoringRule.getBaseStats(rank);
         
-        // 2. Apply Joker Effects (Urutan Kiri ke Kanan)
-        std::cout << "[System] Menerapkan efek Joker:\n";
+        // 2. Apply Joker Effects via JokerManager
         long long currentChips = score.chips;
         double currentMult = score.mult;
-
-        for (auto& joker : ownedJokers) {
-            joker->applyEffect(currentChips, currentMult, chosen, rank);
-            std::cout << "  [!] " << joker->getName() << " aktif! (Chips: " << currentChips << ", Mult: " << currentMult << ")\n";
-        }
+        jokerManager.applyAllEffects(currentChips, currentMult, chosen, rank);
 
         long long finalScore = static_cast<long long>(currentChips * currentMult);
         std::cout << "[System] Skor Akhir: " << currentChips << " x " << currentMult << " = " << finalScore << "\n";
 
-        bool win = blindRule.checkBlind((int)finalScore); // Cast sementara ke int
+        bool win = blindRule.checkBlind((int)finalScore); 
         std::cout << "[System] Menang Ronde? " << (win ? "Ya" : "Tidak") << "\n";
 
         int reward = rewardRule.earnMoney(win, (int)finalScore);
@@ -58,20 +51,25 @@ void GameManager::shopPhase() {
     bool shopping = true;
     while (shopping) {
         shopManager.showShop(playerMoney);
-        std::cout << "Pilih Joker untuk dibeli (atau 0 untuk selesai): ";
+        std::cout << "Pilih Joker untuk dibeli (0 untuk selesai, 9 untuk reorder): ";
         int choice;
         std::cin >> choice;
 
         if (choice == 0) {
             shopping = false;
+        } else if (choice == 9) {
+            std::cout << "Masukkan dua nomor Joker untuk ditukar posisinya (misal: 1 2): ";
+            int a, b;
+            std::cin >> a >> b;
+            jokerManager.swapJokers(a - 1, b - 1);
         } else {
-            if (ownedJokers.size() >= MAX_JOKERS) {
-                std::cout << "[System] Slot Joker penuh! (Maks 5)\n";
+            if (jokerManager.isFull()) {
+                std::cout << "[System] Slot Joker penuh! Jual salah satu atau lewati.\n";
                 continue;
             }
             auto bought = shopManager.buyJoker(choice, playerMoney);
             if (bought) {
-                ownedJokers.push_back(std::move(bought));
+                jokerManager.addJoker(std::move(bought));
             }
         }
     }

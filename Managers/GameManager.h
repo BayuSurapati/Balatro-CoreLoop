@@ -6,6 +6,7 @@
 #include "../Core/Joker.h"
 #include "ScoringRule.h"
 #include "ShopManager.h"
+#include "JokerManager.h"
 #include <vector>
 #include <memory>
 
@@ -17,10 +18,9 @@ private:
     BlindRule blindRule;
     RewardRule rewardRule;
     ShopManager shopManager;
+    JokerManager jokerManager;
 
     int playerMoney = 10; // Uang awal
-    std::vector<std::unique_ptr<Joker>> ownedJokers;
-    const int MAX_JOKERS = 5;
 
 public:
     void runSession();
