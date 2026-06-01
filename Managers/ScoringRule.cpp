@@ -16,27 +16,26 @@ ScoringRule::ScoringRule() {
     pair.setNext(&highCard);
 }
 
-int ScoringRule::scoreHand(const ChosenHand& chosen) {
-    std::cout << "[System] Memulai evaluasi kartu pemain:\n";
-    HandRank rank = flushFive.check(chosen);
-    return convertRankToScore(rank);
+HandRank ScoringRule::evaluateHand(const ChosenHand& chosen) {
+    std::cout << "[System] Memulai evaluasi kartu pemain...\n";
+    return flushFive.check(chosen);
 }
 
-int ScoringRule::convertRankToScore(HandRank rank) {
+Score ScoringRule::getBaseStats(HandRank rank) {
     switch (rank) {
-        case HandRank::FLUSH_FIVE:      return 1200;
-        case HandRank::FLUSH_HOUSE:     return 1300;
-        case HandRank::FIVE_OF_A_KIND:  return 1100;
-        case HandRank::ROYAL_FLUSH:     return 1000;
-        case HandRank::STRAIGHT_FLUSH:  return 900;
-        case HandRank::FOUR_OF_A_KIND:  return 800;
-        case HandRank::FULL_HOUSE:      return 700;
-        case HandRank::FLUSH:           return 600;
-        case HandRank::STRAIGHT:        return 500;
-        case HandRank::THREE_OF_A_KIND: return 400;
-        case HandRank::TWO_PAIR:        return 300;
-        case HandRank::PAIR:            return 200;
-        case HandRank::HIGH_CARD:       return 100;
-        default:                        return 0;
+        case HandRank::FLUSH_FIVE:      return {160, 16};
+        case HandRank::FLUSH_HOUSE:     return {140, 14};
+        case HandRank::FIVE_OF_A_KIND:  return {120, 12};
+        case HandRank::ROYAL_FLUSH:     return {100, 8};
+        case HandRank::STRAIGHT_FLUSH:  return {100, 8};
+        case HandRank::FOUR_OF_A_KIND:  return {60, 7};
+        case HandRank::FULL_HOUSE:      return {40, 4};
+        case HandRank::FLUSH:           return {35, 4};
+        case HandRank::STRAIGHT:        return {30, 4};
+        case HandRank::THREE_OF_A_KIND: return {30, 3};
+        case HandRank::TWO_PAIR:        return {20, 2};
+        case HandRank::PAIR:            return {10, 2};
+        case HandRank::HIGH_CARD:       return {5, 1};
+        default:                        return {0, 0};
     }
 }

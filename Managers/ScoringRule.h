@@ -1,6 +1,7 @@
 #pragma once
 #include "../Models/ChosenHand.h"
 #include "../Models/HandRank.h"
+#include "../Models/Score.h"
 #include "../HandChecker/FlushFiveChecker.h"
 #include "../HandChecker/FlushHouseChecker.h"
 #include "../HandChecker/FiveOfAKindChecker.h"
@@ -33,6 +34,6 @@ private:
 
 public:
     ScoringRule();
-    int scoreHand(const ChosenHand& chosen);
-    int convertRankToScore(HandRank rank);
+    HandRank evaluateHand(const ChosenHand& chosen);
+    Score getBaseStats(HandRank rank);
 };
