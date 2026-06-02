@@ -16,14 +16,21 @@ protected:
         return freq;
     }
 
-    bool allSameSuit(const ChosenHand& hand) const {
-        char s = hand.cards[0].suit;
-        for (auto& c : hand.cards)
-            if (c.suit != s) return false;
-        return true;
+   bool allSameSuit(const ChosenHand& hand) const {
+    // Tolak jika jumlah kartu tidak sama dengan 5
+    if (hand.cards.size() != 5) return false;
+
+    // tipe data 'char' sesuai deklarasi di Models/Card.h
+    char s = hand.cards[0].suit;
+    for (auto& c : hand.cards) {
+        if (c.suit != s) return false;
     }
+    return true;
+}
 
     bool isSequential(const ChosenHand& hand) const {
+        if (hand.cards.size() != 5) return false; //harus cek 5 kartu untuk straight    
+
         std::vector<int> ranks;
         for (auto& c : hand.cards) ranks.push_back(c.rank);
         std::sort(ranks.begin(), ranks.end());
